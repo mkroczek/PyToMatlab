@@ -77,6 +77,56 @@ public interface PyGrammarParserListener extends ParseTreeListener {
 	 */
 	void exitAssignment_stmt(PyGrammarParser.Assignment_stmtContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link PyGrammarParser#assignment_op}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignment_op(PyGrammarParser.Assignment_opContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PyGrammarParser#assignment_op}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignment_op(PyGrammarParser.Assignment_opContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PyGrammarParser#flow_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterFlow_stmt(PyGrammarParser.Flow_stmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PyGrammarParser#flow_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitFlow_stmt(PyGrammarParser.Flow_stmtContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PyGrammarParser#break_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterBreak_stmt(PyGrammarParser.Break_stmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PyGrammarParser#break_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitBreak_stmt(PyGrammarParser.Break_stmtContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PyGrammarParser#continue_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterContinue_stmt(PyGrammarParser.Continue_stmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PyGrammarParser#continue_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitContinue_stmt(PyGrammarParser.Continue_stmtContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PyGrammarParser#return_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterReturn_stmt(PyGrammarParser.Return_stmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PyGrammarParser#return_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitReturn_stmt(PyGrammarParser.Return_stmtContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link PyGrammarParser#if_stmt}.
 	 * @param ctx the parse tree
 	 */

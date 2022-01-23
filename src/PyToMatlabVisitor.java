@@ -27,6 +27,7 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
 
     @Override
     public Object visitSimple_stmts(PyGrammarParser.Simple_stmtsContext ctx) {
+        appendTabs();
         visitSimple_stmt(ctx.simple_stmt());
         newline(currentBuilder());
         return null;
@@ -42,12 +43,47 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
     public Object visitAssignment_stmt(PyGrammarParser.Assignment_stmtContext ctx) {
         append(ctx.IDENTIFIER().getText());
         append("=");
+        if (ctx.assignment_op() != null){
+            switch(ctx.assignment_op().start.getType()){
+                case PyGrammarLexer.ADD_ASSIGN -> append(ctx.IDENTIFIER().getText()+"+");
+                case PyGrammarLexer.SUB_ASSIGN -> append(ctx.IDENTIFIER().getText()+"-");
+                case PyGrammarLexer.MULT_ASSIGN -> append(ctx.IDENTIFIER().getText()+"*");
+                case PyGrammarLexer.DIV_ASSIGN -> append(ctx.IDENTIFIER().getText()+"/");
+            }
+        }
         visitTest(ctx.test());
         return null;
     }
 
     @Override
+    public Object visitFlow_stmt(PyGrammarParser.Flow_stmtContext ctx) {
+        visitChildren(ctx);
+        return null;
+    }
+
+    @Override
+    public Object visitBreak_stmt(PyGrammarParser.Break_stmtContext ctx) {
+        append(ctx.getText());
+        return null;
+    }
+
+    @Override public Object visitContinue_stmt(PyGrammarParser.Continue_stmtContext ctx) {
+        append(ctx.getText());
+        return null;
+    }
+
+    @Override
+    public Object visitReturn_stmt(PyGrammarParser.Return_stmtContext ctx) {
+        append(ctx.RETURN().getText()+"=");
+        if (ctx.test() != null){
+            visitTest(ctx.test());
+        }
+        return null;
+    }
+
+    @Override
     public Object visitCompound_stmt(PyGrammarParser.Compound_stmtContext ctx) {
+        appendTabs();
         visitChildren(ctx);
         return null;
     }
@@ -278,8 +314,12 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
         indents-=1;
     }
 
-    private void append(String text){
+    private void appendTabs(){
         currentBuilder().append("\t".repeat(indents));
+    }
+
+    private void append(String text){
+//        currentBuilder().append("\t".repeat(indents));
         currentBuilder().append(text);
     }
 

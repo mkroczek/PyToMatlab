@@ -52,6 +52,36 @@ public interface PyGrammarParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssignment_stmt(PyGrammarParser.Assignment_stmtContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link PyGrammarParser#assignment_op}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignment_op(PyGrammarParser.Assignment_opContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PyGrammarParser#flow_stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFlow_stmt(PyGrammarParser.Flow_stmtContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PyGrammarParser#break_stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBreak_stmt(PyGrammarParser.Break_stmtContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PyGrammarParser#continue_stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitContinue_stmt(PyGrammarParser.Continue_stmtContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PyGrammarParser#return_stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReturn_stmt(PyGrammarParser.Return_stmtContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link PyGrammarParser#if_stmt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
