@@ -187,36 +187,6 @@ public interface PyGrammarParserListener extends ParseTreeListener {
 	 */
 	void exitExpr(PyGrammarParser.ExprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link PyGrammarParser#xor_expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterXor_expr(PyGrammarParser.Xor_exprContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PyGrammarParser#xor_expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitXor_expr(PyGrammarParser.Xor_exprContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link PyGrammarParser#and_expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterAnd_expr(PyGrammarParser.And_exprContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PyGrammarParser#and_expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitAnd_expr(PyGrammarParser.And_exprContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link PyGrammarParser#shift_expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterShift_expr(PyGrammarParser.Shift_exprContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PyGrammarParser#shift_expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitShift_expr(PyGrammarParser.Shift_exprContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link PyGrammarParser#arithm_expr}.
 	 * @param ctx the parse tree
 	 */

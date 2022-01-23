@@ -118,24 +118,6 @@ public interface PyGrammarParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExpr(PyGrammarParser.ExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PyGrammarParser#xor_expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitXor_expr(PyGrammarParser.Xor_exprContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PyGrammarParser#and_expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAnd_expr(PyGrammarParser.And_exprContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PyGrammarParser#shift_expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitShift_expr(PyGrammarParser.Shift_exprContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link PyGrammarParser#arithm_expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

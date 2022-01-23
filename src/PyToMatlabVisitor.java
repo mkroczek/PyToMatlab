@@ -1,10 +1,13 @@
+import java.util.function.ToDoubleBiFunction;
+
 public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
     private StringBuilder codeBlock = new StringBuilder();
     private StringBuilder functionsBlock = new StringBuilder(); //has to be on the end of script
     private CompileContext compileContext;
+    private int indents = 0;
 
     public String getCompiled(){
-        return codeBlock.toString()+functionsBlock.toString();
+        return codeBlock.toString()+"\n"+functionsBlock.toString();
     }
 
     @Override
@@ -37,7 +40,9 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
 
     @Override
     public Object visitAssignment_stmt(PyGrammarParser.Assignment_stmtContext ctx) {
-        currentBuilder().append(ctx.getText());
+        append(ctx.IDENTIFIER().getText());
+        append("=");
+        visitTest(ctx.test());
         return null;
     }
 
@@ -49,10 +54,64 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
 
     @Override
     public Object visitIf_stmt(PyGrammarParser.If_stmtContext ctx) {
-        currentBuilder().append("if ");
+        append("if ");
         visitTest(ctx.test(0));
         newline(currentBuilder());
         visitBlock(ctx.block(0));
+        int elifCount = ctx.ELIF().size();
+        for (int i=0; i < elifCount; i++){
+            append("elseif ");
+            visitTest(ctx.test(i+1));
+            newline(currentBuilder());
+            visitBlock(ctx.block(0));
+        }
+        if (ctx.ELSE() != null){
+            append("else ");
+            newline(currentBuilder());
+            visitBlock(ctx.block(elifCount+1));
+        }
+        append("end");
+        newline(currentBuilder());
+        return null;
+    }
+
+    @Override
+    public Object visitWhile_stmt(PyGrammarParser.While_stmtContext ctx) {
+        append("while ");
+        visitTest(ctx.test());
+        newline(currentBuilder());
+        visitBlock(ctx.block());
+        append("end");
+        newline(currentBuilder());
+        return null;
+    }
+
+    @Override
+    public Object visitFor_stmt(PyGrammarParser.For_stmtContext ctx) {
+        //TODO: dodac range jako token i zamieniac go na 1:range(x)
+        append("for ");
+        append(ctx.IDENTIFIER().getText()+" = ");
+        visitTest(ctx.test());
+        newline(currentBuilder());
+        visitBlock(ctx.block());
+        append("end");
+        newline(currentBuilder());
+        return null;
+    }
+
+    @Override public Object visitFunc_def(PyGrammarParser.Func_defContext ctx) {
+        //TODO: dodac return
+        compileContext = CompileContext.FUNCTION;
+        append("function return = ");
+        append(ctx.IDENTIFIER().getText()+"(");
+        if(ctx.arglist() != null){
+            append(ctx.arglist().getText());
+        }
+        append(")");
+        newline(currentBuilder());
+        visitBlock(ctx.block());
+        append("end");
+        compileContext = CompileContext.CODE;
         return null;
     }
 
@@ -66,7 +125,7 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
     public Object visitOr_test(PyGrammarParser.Or_testContext ctx) {
         visitAnd_test(ctx.and_test(0));
         for(int i = 1; i < ctx.and_test().size(); i++){
-            currentBuilder().append("||");
+            append("||");
             visitAnd_test(ctx.and_test(i));
         }
         return null;
@@ -76,7 +135,7 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
     public Object visitAnd_test(PyGrammarParser.And_testContext ctx) {
         visitNot_test(ctx.not_test(0));
         for(int i = 1; i < ctx.not_test().size(); i++){
-            currentBuilder().append("&&");
+            append("&&");
             visitNot_test(ctx.not_test(i));
         }
         return null;
@@ -85,7 +144,7 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
     @Override
     public Object visitNot_test(PyGrammarParser.Not_testContext ctx) {
         if (ctx.not_test() != null){
-            currentBuilder().append("~");
+            append("~");
             visitNot_test(ctx.not_test());
         }
         else if (ctx.comparison() != null){
@@ -107,17 +166,121 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
     @Override
     public Object visitComp_op(PyGrammarParser.Comp_opContext ctx) {
         if(ctx.NOT_EQ_2() != null){
-            currentBuilder().append("~=");
+            append("~=");
         }
         else {
-            currentBuilder().append(ctx);
+            append(ctx.getText());
         }
         return null;
     }
 
     @Override
     public Object visitExpr(PyGrammarParser.ExprContext ctx) {
+        visitArithm_expr(ctx.arithm_expr());
+        return null;
+    }
 
+    @Override
+    public Object visitArithm_expr(PyGrammarParser.Arithm_exprContext ctx) {
+        visitTerm(ctx.term(0));
+        for (int i = 0; i<ctx.add_op().size(); i++){
+            visitAdd_op(ctx.add_op(0));
+            visitTerm(ctx.term(i+1));
+        }
+        return null;
+    }
+
+    @Override public Object visitAdd_op(PyGrammarParser.Add_opContext ctx) {
+        append(ctx.getText());
+        return null;
+    }
+
+    @Override
+    public Object visitTerm(PyGrammarParser.TermContext ctx) {
+        visitFactor(ctx.factor(0));
+        for (int i = 0; i<ctx.mul_op().size(); i++){
+            visitMul_op(ctx.mul_op(0));
+            visitFactor(ctx.factor(i+1));
+        }
+        return null;
+    }
+
+    @Override
+    public Object visitMul_op(PyGrammarParser.Mul_opContext ctx) {
+        //TODO: dodac obsluge modulo i dzielenia calkowitoliczbowego
+        append(ctx.getText());
+        return null;
+    }
+
+    @Override
+    public Object visitFactor(PyGrammarParser.FactorContext ctx) {
+        if (ctx.factor() != null){
+            if (ctx.ADD() != null)
+                append("+");
+            if (ctx.MINUS() != null)
+                append("-");
+            visitFactor(ctx.factor());
+        }
+        else if (ctx.power() != null){
+            visitPower(ctx.power());
+        }
+        return null;
+    }
+
+    @Override
+    public Object visitPower(PyGrammarParser.PowerContext ctx) {
+        visitAtom_expr(ctx.atom_expr());
+        if (ctx.factor() != null){
+            append(".^");
+            visitFactor(ctx.factor());
+        }
+        return null;
+    }
+
+    @Override
+    public Object visitAtom_expr(PyGrammarParser.Atom_exprContext ctx) {
+//        visitAtom(ctx.atom());
+//        for (int i = 0; i < ctx.trailer().size(); i++){
+//            visitTrailer(ctx.trailer(i));
+//        }
+//        return null;
+        //TODO: Ogarnac czy to zadziala
+        append(ctx.getText());
+        return null;
+    }
+
+    @Override
+    public Object visitAtom(PyGrammarParser.AtomContext ctx) {
+        //TODO: Ogarnac czy to zadziala
+        append(ctx.getText());
+        return null;
+    }
+
+    @Override
+    public Object visitBlock(PyGrammarParser.BlockContext ctx) {
+        if (ctx.simple_stmt() != null)
+            visitSimple_stmt(ctx.simple_stmt());
+        else{
+            addIndent();
+            for (int i = 0; i < ctx.stmt().size(); i++){
+                visitStmt(ctx.stmt(i));
+            }
+            addDedent();
+        }
+        return null;
+    }
+
+    private void addIndent(){
+        indents+=1;
+    }
+
+    private void addDedent(){
+        indents-=1;
+    }
+
+    private void append(String text){
+        currentBuilder().append("\t".repeat(indents));
+        currentBuilder().append(text);
     }
 
     private void newline(StringBuilder builder){
