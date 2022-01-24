@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        CharStream input = CharStreams.fromFileName("test/matlab_test.py");
+        CharStream input = CharStreams.fromFileName("test/fibonacci.py");
         PyGrammarLexer lexer = new PyGrammarLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         PyGrammarParser parser = new PyGrammarParser(tokens);

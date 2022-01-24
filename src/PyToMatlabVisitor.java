@@ -104,16 +104,19 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
         visitBlock(ctx.block(0));
         int elifCount = ctx.ELIF().size();
         for (int i=0; i < elifCount; i++){
+            appendTabs();
             append("elseif ");
             visitTest(ctx.test(i+1));
             newline(currentBuilder());
-            visitBlock(ctx.block(0));
+            visitBlock(ctx.block(i+1));
         }
         if (ctx.ELSE() != null){
+            appendTabs();
             append("else ");
             newline(currentBuilder());
             visitBlock(ctx.block(elifCount+1));
         }
+        appendTabs();
         append("end");
         newline(currentBuilder());
         return null;
@@ -125,6 +128,7 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
         visitTest(ctx.test());
         newline(currentBuilder());
         visitBlock(ctx.block());
+        appendTabs();
         append("end");
         newline(currentBuilder());
         return null;
