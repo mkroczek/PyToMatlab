@@ -1,3 +1,5 @@
+import org.antlr.v4.runtime.tree.TerminalNode;
+
 import java.util.function.ToDoubleBiFunction;
 
 public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
@@ -74,10 +76,16 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
 
     @Override
     public Object visitReturn_stmt(PyGrammarParser.Return_stmtContext ctx) {
-        append(ctx.RETURN().getText()+"=");
+        append("res"+"=");
         if (ctx.test() != null){
             visitTest(ctx.test());
         }
+        return null;
+    }
+
+    @Override
+    public Object visitExpr_stmt(PyGrammarParser.Expr_stmtContext ctx) {
+        visitChildren(ctx);
         return null;
     }
 
@@ -138,10 +146,10 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
     @Override public Object visitFunc_def(PyGrammarParser.Func_defContext ctx) {
         //TODO: dodac return
         compileContext = CompileContext.FUNCTION;
-        append("function return = ");
+        append("function res = ");
         append(ctx.IDENTIFIER().getText()+"(");
         if(ctx.arglist() != null){
-            append(ctx.arglist().getText());
+            visitArglist(ctx.arglist());
         }
         append(")");
         newline(currentBuilder());
@@ -275,20 +283,130 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
 
     @Override
     public Object visitAtom_expr(PyGrammarParser.Atom_exprContext ctx) {
-//        visitAtom(ctx.atom());
-//        for (int i = 0; i < ctx.trailer().size(); i++){
-//            visitTrailer(ctx.trailer(i));
-//        }
-//        return null;
-        //TODO: Ogarnac czy to zadziala
-        append(ctx.getText());
+        visitAtom(ctx.atom());
+        if(ctx.trailer() != null)
+            visitTrailer(ctx.trailer());
         return null;
     }
 
     @Override
     public Object visitAtom(PyGrammarParser.AtomContext ctx) {
-        //TODO: Ogarnac czy to zadziala
-        append(ctx.getText());
+        if (ctx.children.get(0) instanceof TerminalNode){
+            switch (((TerminalNode) ctx.children.get(0)).getSymbol().getType()){
+                case PyGrammarParser.STRING -> append(parseString(ctx.children.get(0).getText()));
+                case PyGrammarParser.TRUE -> append("true");
+                case PyGrammarParser.FALSE -> append("false");
+                case PyGrammarParser.NONE -> append("NaN");
+                default -> append(ctx.children.get(0).getText());
+            }
+        }
+        else
+            visitChildren(ctx);
+        return null;
+    }
+
+    @Override
+    public Object visitFun_call(PyGrammarParser.Fun_callContext ctx) {
+        append(ctx.IDENTIFIER().getText());
+        visitPar_arguments(ctx.par_arguments());
+        return null;
+    }
+
+    @Override
+    public Object visitPar_arguments(PyGrammarParser.Par_argumentsContext ctx) {
+        append("(");
+        if (ctx.arglist() != null)
+            visitArglist(ctx.arglist());
+        append(")");
+        return null;
+    }
+
+    @Override
+    public Object visitBuilt_fun_call(PyGrammarParser.Built_fun_callContext ctx) {
+        if (ctx.LEN() != null){
+            append("size(");
+            visitArgument(ctx.argument());
+            append(",1)");
+        }
+        else if (ctx.PRINT() != null){
+            append("disp(");
+            visitArgument(ctx.argument());
+            append(")");
+        }
+        return null;
+    }
+
+    @Override
+    public Object visitArgument(PyGrammarParser.ArgumentContext ctx) {
+        if (ctx.IDENTIFIER() != null)
+            append(ctx.getText());
+        else
+            visitTest(ctx.test());
+        return null;
+    }
+
+    @Override
+    public Object visitList2d(PyGrammarParser.List2dContext ctx) {
+        append("[");
+        visitList(ctx.list(0));
+        for (int i = 0; i < ctx.COMMA().size(); i++){
+            append(";");
+            visitList(ctx.list(i+1));
+        }
+        append("]");
+        return null;
+    }
+
+    @Override
+    public Object visitList(PyGrammarParser.ListContext ctx) {
+        append("[");
+        if (ctx.arglist() != null)
+            visitArglist(ctx.arglist());
+        append("]");
+        return null;
+    }
+
+    @Override
+    public Object visitTrailer(PyGrammarParser.TrailerContext ctx) {
+        if (ctx.par_arguments() != null)
+            visitPar_arguments(ctx.par_arguments());
+        append("(");
+        for (int i = 0; i < ctx.subscriptlist().size(); i++){
+            visitSubscriptlist(ctx.subscriptlist(i));
+            if (i != ctx.subscriptlist().size()-1)
+                append(",");
+        }
+        append(")");
+        return null;
+    }
+
+    @Override public Object visitSubscriptlist(PyGrammarParser.SubscriptlistContext ctx) {
+        visitSubscript_(ctx.subscript_(0));
+        for (int i = 0; i < ctx.COMMA().size(); i++){
+            append(",");
+            visitSubscript_(ctx.subscript_(i+1));
+        }
+        return null;
+    }
+
+    @Override
+    public Object visitSubscript_(PyGrammarParser.Subscript_Context ctx) {
+        visitChildren(ctx);
+        return null;
+    }
+
+    @Override
+    public Object visitSlice(PyGrammarParser.SliceContext ctx) {
+        return visitChildren(ctx);
+    }
+
+    @Override
+    public Object visitArglist(PyGrammarParser.ArglistContext ctx) {
+        visitArgument(ctx.argument(0));
+        for (int i = 0; i < ctx.COMMA().size(); i++){
+            append(",");
+            visitArgument(ctx.argument(i+1));
+        }
         return null;
     }
 
@@ -304,6 +422,10 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
             addDedent();
         }
         return null;
+    }
+
+    private String parseString(String string){
+        return string.replace('"', '\'');
     }
 
     private void addIndent(){

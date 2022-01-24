@@ -1,3 +1,4 @@
+import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -12,6 +13,7 @@ public class Main {
         PyGrammarLexer lexer = new PyGrammarLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         PyGrammarParser parser = new PyGrammarParser(tokens);
+        parser.addErrorListener(new ParsingErrorListener());
         ParseTree parseTree = parser.file_input();
 
         //generated tree

@@ -16,7 +16,7 @@ file_input: (NEWLINE | stmt)* EOF;
 stmt: simple_stmts | compound_stmt;
 
 simple_stmts: simple_stmt NEWLINE;
-simple_stmt: assignment_stmt | flow_stmt;
+simple_stmt: assignment_stmt | flow_stmt | expr_stmt;
 compound_stmt: if_stmt | func_def | while_stmt | for_stmt;
 
 //simple_stmt
@@ -26,6 +26,7 @@ flow_stmt: break_stmt | continue_stmt | return_stmt;
 break_stmt: 'break';
 continue_stmt: 'continue';
 return_stmt: 'return' (test)?;
+expr_stmt: test;
 
 //compound_stmt
 if_stmt: 'if' test ':' block ('elif' test ':' block)* ('else' ':' block)?;
@@ -39,10 +40,7 @@ and_test: not_test ('and' not_test)*;
 not_test: 'not' not_test | comparison;
 comparison: expr (comp_op expr)*;
 comp_op: '<'|'>'|'=='|'>='|'<='|'!='|'in'|'not' 'in'|'is'|'is' 'not';
-//expr: xor_expr ('|' xor_expr)*;
-//xor_expr: and_expr ('^' and_expr)*;
-//and_expr: shift_expr ('&' shift_expr)*;
-//shift_expr: arithm_expr (('<<'|'>>') arithm_expr)*;
+
 expr: arithm_expr;
 arithm_expr: term (add_op term)* ;
 term: factor (mul_op factor)* ;
@@ -50,18 +48,34 @@ add_op: '+' | '-' ;
 mul_op: '/' | '*' | '%' | '//';
 factor: ('+'|'-') factor | power ;
 power: atom_expr ('**' factor)? ;
-atom_expr: atom trailer*;
-atom: '(' (arglist)? ')' |
-      '[' (arglist)? ']' |
-      '{' (arglist | pairslist)? '}' |
-      IDENTIFIER | NUMBER | STRING+ | 'None' | 'True' | 'False';
-trailer: '(' (arglist)? ')' | '[' subscriptlist ']' | '.' IDENTIFIER;
-arglist: argument (',' argument)*  (',')?;
+atom_expr: atom trailer?;
+atom: fun_call | built_fun_call | list2d | list | IDENTIFIER | STRING+ | NUMBER | 'True' | 'False' | 'None';
+fun_call: IDENTIFIER par_arguments;
+par_arguments: '(' (arglist)? ')';
+built_fun_call: ('len'|'print') '(' argument ')';
+list2d: '[' list (',' list)* ']';
+list: '[' (arglist)? ']';
+arglist: argument (',' argument)*;
 argument: test | IDENTIFIER;
-pairslist: pair (',' pair)*;
-pair: test ':' test;
-subscriptlist: subscript_ (',' subscript_)* (',')?;
-subscript_: test | (test)? ':' (test)? (slice_step)?;
+trailer: (par_arguments)? ('[' subscriptlist ']')+ | par_arguments ('[' subscriptlist ']')*;
+subscriptlist: subscript_ (',' subscript_)*;
+subscript_: test | slice;
+slice: (test)? ':' (test)? (slice_step)?;
 slice_step: ':' (test)?;
+
+
+//atom_expr: (atom | built_fun_call) trailer*;
+//atom: list2d | list |
+//      IDENTIFIER | NUMBER | STRING | 'None' | 'True' | 'False';
+//list2d: '[' list (',' list)* ']';
+//list: '[' (arglist)? ']';
+//trailer: par_arguments | '.' IDENTIFIER;
+//par_arguments: '(' (arglist)? ')';
+//brack_arguments: '[' subscriptlist ']';
+//arglist: argument (',' argument)*  (',')?;
+//argument: test | IDENTIFIER;
+//subscriptlist: subscript_ (',' subscript_)* (',')?;
+//subscript_: test | (test)? ':' (test)? (slice_step)?;
+//slice_step: ':' (test)?;
 
 block: simple_stmt | NEWLINE INDENT stmt+ DEDENT;

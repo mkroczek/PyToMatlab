@@ -82,6 +82,12 @@ public interface PyGrammarParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitReturn_stmt(PyGrammarParser.Return_stmtContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link PyGrammarParser#expr_stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpr_stmt(PyGrammarParser.Expr_stmtContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link PyGrammarParser#if_stmt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -196,11 +202,35 @@ public interface PyGrammarParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAtom(PyGrammarParser.AtomContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PyGrammarParser#trailer}.
+	 * Visit a parse tree produced by {@link PyGrammarParser#fun_call}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitTrailer(PyGrammarParser.TrailerContext ctx);
+	T visitFun_call(PyGrammarParser.Fun_callContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PyGrammarParser#par_arguments}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPar_arguments(PyGrammarParser.Par_argumentsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PyGrammarParser#built_fun_call}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBuilt_fun_call(PyGrammarParser.Built_fun_callContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PyGrammarParser#list2d}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitList2d(PyGrammarParser.List2dContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PyGrammarParser#list}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitList(PyGrammarParser.ListContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PyGrammarParser#arglist}.
 	 * @param ctx the parse tree
@@ -214,17 +244,11 @@ public interface PyGrammarParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitArgument(PyGrammarParser.ArgumentContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PyGrammarParser#pairslist}.
+	 * Visit a parse tree produced by {@link PyGrammarParser#trailer}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPairslist(PyGrammarParser.PairslistContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PyGrammarParser#pair}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPair(PyGrammarParser.PairContext ctx);
+	T visitTrailer(PyGrammarParser.TrailerContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PyGrammarParser#subscriptlist}.
 	 * @param ctx the parse tree
@@ -237,6 +261,12 @@ public interface PyGrammarParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitSubscript_(PyGrammarParser.Subscript_Context ctx);
+	/**
+	 * Visit a parse tree produced by {@link PyGrammarParser#slice}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSlice(PyGrammarParser.SliceContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PyGrammarParser#slice_step}.
 	 * @param ctx the parse tree

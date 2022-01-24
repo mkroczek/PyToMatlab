@@ -159,6 +159,18 @@ public class PyGrammarParserBaseListener implements PyGrammarParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterExpr_stmt(PyGrammarParser.Expr_stmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExpr_stmt(PyGrammarParser.Expr_stmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterIf_stmt(PyGrammarParser.If_stmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -387,13 +399,61 @@ public class PyGrammarParserBaseListener implements PyGrammarParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTrailer(PyGrammarParser.TrailerContext ctx) { }
+	@Override public void enterFun_call(PyGrammarParser.Fun_callContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTrailer(PyGrammarParser.TrailerContext ctx) { }
+	@Override public void exitFun_call(PyGrammarParser.Fun_callContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPar_arguments(PyGrammarParser.Par_argumentsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPar_arguments(PyGrammarParser.Par_argumentsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBuilt_fun_call(PyGrammarParser.Built_fun_callContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBuilt_fun_call(PyGrammarParser.Built_fun_callContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterList2d(PyGrammarParser.List2dContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitList2d(PyGrammarParser.List2dContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterList(PyGrammarParser.ListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitList(PyGrammarParser.ListContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -423,25 +483,13 @@ public class PyGrammarParserBaseListener implements PyGrammarParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPairslist(PyGrammarParser.PairslistContext ctx) { }
+	@Override public void enterTrailer(PyGrammarParser.TrailerContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPairslist(PyGrammarParser.PairslistContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterPair(PyGrammarParser.PairContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitPair(PyGrammarParser.PairContext ctx) { }
+	@Override public void exitTrailer(PyGrammarParser.TrailerContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -466,6 +514,18 @@ public class PyGrammarParserBaseListener implements PyGrammarParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitSubscript_(PyGrammarParser.Subscript_Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSlice(PyGrammarParser.SliceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSlice(PyGrammarParser.SliceContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

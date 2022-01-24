@@ -127,6 +127,16 @@ public interface PyGrammarParserListener extends ParseTreeListener {
 	 */
 	void exitReturn_stmt(PyGrammarParser.Return_stmtContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link PyGrammarParser#expr_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpr_stmt(PyGrammarParser.Expr_stmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PyGrammarParser#expr_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpr_stmt(PyGrammarParser.Expr_stmtContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link PyGrammarParser#if_stmt}.
 	 * @param ctx the parse tree
 	 */
@@ -317,15 +327,55 @@ public interface PyGrammarParserListener extends ParseTreeListener {
 	 */
 	void exitAtom(PyGrammarParser.AtomContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link PyGrammarParser#trailer}.
+	 * Enter a parse tree produced by {@link PyGrammarParser#fun_call}.
 	 * @param ctx the parse tree
 	 */
-	void enterTrailer(PyGrammarParser.TrailerContext ctx);
+	void enterFun_call(PyGrammarParser.Fun_callContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link PyGrammarParser#trailer}.
+	 * Exit a parse tree produced by {@link PyGrammarParser#fun_call}.
 	 * @param ctx the parse tree
 	 */
-	void exitTrailer(PyGrammarParser.TrailerContext ctx);
+	void exitFun_call(PyGrammarParser.Fun_callContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PyGrammarParser#par_arguments}.
+	 * @param ctx the parse tree
+	 */
+	void enterPar_arguments(PyGrammarParser.Par_argumentsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PyGrammarParser#par_arguments}.
+	 * @param ctx the parse tree
+	 */
+	void exitPar_arguments(PyGrammarParser.Par_argumentsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PyGrammarParser#built_fun_call}.
+	 * @param ctx the parse tree
+	 */
+	void enterBuilt_fun_call(PyGrammarParser.Built_fun_callContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PyGrammarParser#built_fun_call}.
+	 * @param ctx the parse tree
+	 */
+	void exitBuilt_fun_call(PyGrammarParser.Built_fun_callContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PyGrammarParser#list2d}.
+	 * @param ctx the parse tree
+	 */
+	void enterList2d(PyGrammarParser.List2dContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PyGrammarParser#list2d}.
+	 * @param ctx the parse tree
+	 */
+	void exitList2d(PyGrammarParser.List2dContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PyGrammarParser#list}.
+	 * @param ctx the parse tree
+	 */
+	void enterList(PyGrammarParser.ListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PyGrammarParser#list}.
+	 * @param ctx the parse tree
+	 */
+	void exitList(PyGrammarParser.ListContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link PyGrammarParser#arglist}.
 	 * @param ctx the parse tree
@@ -347,25 +397,15 @@ public interface PyGrammarParserListener extends ParseTreeListener {
 	 */
 	void exitArgument(PyGrammarParser.ArgumentContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link PyGrammarParser#pairslist}.
+	 * Enter a parse tree produced by {@link PyGrammarParser#trailer}.
 	 * @param ctx the parse tree
 	 */
-	void enterPairslist(PyGrammarParser.PairslistContext ctx);
+	void enterTrailer(PyGrammarParser.TrailerContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link PyGrammarParser#pairslist}.
+	 * Exit a parse tree produced by {@link PyGrammarParser#trailer}.
 	 * @param ctx the parse tree
 	 */
-	void exitPairslist(PyGrammarParser.PairslistContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link PyGrammarParser#pair}.
-	 * @param ctx the parse tree
-	 */
-	void enterPair(PyGrammarParser.PairContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PyGrammarParser#pair}.
-	 * @param ctx the parse tree
-	 */
-	void exitPair(PyGrammarParser.PairContext ctx);
+	void exitTrailer(PyGrammarParser.TrailerContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link PyGrammarParser#subscriptlist}.
 	 * @param ctx the parse tree
@@ -386,6 +426,16 @@ public interface PyGrammarParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitSubscript_(PyGrammarParser.Subscript_Context ctx);
+	/**
+	 * Enter a parse tree produced by {@link PyGrammarParser#slice}.
+	 * @param ctx the parse tree
+	 */
+	void enterSlice(PyGrammarParser.SliceContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PyGrammarParser#slice}.
+	 * @param ctx the parse tree
+	 */
+	void exitSlice(PyGrammarParser.SliceContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link PyGrammarParser#slice_step}.
 	 * @param ctx the parse tree

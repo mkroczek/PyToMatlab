@@ -12,6 +12,7 @@ options {
 
 STRING
     : '"' .*? '"'
+    | '\'' .*? '\''
     ;
 
 NUMBER
@@ -63,6 +64,8 @@ CONTINUE : 'continue';
 BREAK : 'break';
 ASYNC : 'async';
 AWAIT : 'await';
+PRINT : 'print';
+LEN : 'len';
 
 IDENTIFIER
     : ID_START ID_CONTINUE*{System.out.println("Identifier");}
