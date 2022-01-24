@@ -20,7 +20,7 @@ simple_stmt: assignment_stmt | flow_stmt | expr_stmt;
 compound_stmt: if_stmt | func_def | while_stmt | for_stmt;
 
 //simple_stmt
-assignment_stmt: IDENTIFIER ('='|assignment_op) test ;
+assignment_stmt: test ('='|assignment_op) test ;
 assignment_op: ('+=' | '-=' | '*=' | '/=');
 flow_stmt: break_stmt | continue_stmt | return_stmt;
 break_stmt: 'break';
@@ -62,20 +62,5 @@ subscriptlist: subscript_ (',' subscript_)*;
 subscript_: test | slice;
 slice: (test)? ':' (test)? (slice_step)?;
 slice_step: ':' (test)?;
-
-
-//atom_expr: (atom | built_fun_call) trailer*;
-//atom: list2d | list |
-//      IDENTIFIER | NUMBER | STRING | 'None' | 'True' | 'False';
-//list2d: '[' list (',' list)* ']';
-//list: '[' (arglist)? ']';
-//trailer: par_arguments | '.' IDENTIFIER;
-//par_arguments: '(' (arglist)? ')';
-//brack_arguments: '[' subscriptlist ']';
-//arglist: argument (',' argument)*  (',')?;
-//argument: test | IDENTIFIER;
-//subscriptlist: subscript_ (',' subscript_)* (',')?;
-//subscript_: test | (test)? ':' (test)? (slice_step)?;
-//slice_step: ':' (test)?;
 
 block: simple_stmt | NEWLINE INDENT stmt+ DEDENT;

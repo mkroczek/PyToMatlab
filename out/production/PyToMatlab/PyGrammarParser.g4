@@ -20,7 +20,7 @@ simple_stmt: assignment_stmt | flow_stmt | expr_stmt;
 compound_stmt: if_stmt | func_def | while_stmt | for_stmt;
 
 //simple_stmt
-assignment_stmt: IDENTIFIER ('='|assignment_op) test ;
+assignment_stmt: test ('='|assignment_op) test ;
 assignment_op: ('+=' | '-=' | '*=' | '/=');
 flow_stmt: break_stmt | continue_stmt | return_stmt;
 break_stmt: 'break';

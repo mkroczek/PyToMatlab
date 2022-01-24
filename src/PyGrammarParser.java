@@ -597,9 +597,11 @@ public class PyGrammarParser extends Parser {
 	}
 
 	public static class Assignment_stmtContext extends ParserRuleContext {
-		public TerminalNode IDENTIFIER() { return getToken(PyGrammarParser.IDENTIFIER, 0); }
-		public TestContext test() {
-			return getRuleContext(TestContext.class,0);
+		public List<TestContext> test() {
+			return getRuleContexts(TestContext.class);
+		}
+		public TestContext test(int i) {
+			return getRuleContext(TestContext.class,i);
 		}
 		public TerminalNode ASSIGN() { return getToken(PyGrammarParser.ASSIGN, 0); }
 		public Assignment_opContext assignment_op() {
@@ -631,7 +633,7 @@ public class PyGrammarParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(123);
-			match(IDENTIFIER);
+			test();
 			setState(126);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
@@ -3330,7 +3332,7 @@ public class PyGrammarParser extends Parser {
 		"\b\5\2ln\5\f\7\2mk\3\2\2\2ml\3\2\2\2n\7\3\2\2\2op\5\n\6\2pq\7/\2\2q\t"+
 		"\3\2\2\2rv\5\16\b\2sv\5\22\n\2tv\5\32\16\2ur\3\2\2\2us\3\2\2\2ut\3\2\2"+
 		"\2v\13\3\2\2\2w|\5\34\17\2x|\5\36\20\2y|\5 \21\2z|\5\"\22\2{w\3\2\2\2"+
-		"{x\3\2\2\2{y\3\2\2\2{z\3\2\2\2|\r\3\2\2\2}\u0080\7.\2\2~\u0081\7?\2\2"+
+		"{x\3\2\2\2{y\3\2\2\2{z\3\2\2\2|\r\3\2\2\2}\u0080\5$\23\2~\u0081\7?\2\2"+
 		"\177\u0081\5\20\t\2\u0080~\3\2\2\2\u0080\177\3\2\2\2\u0081\u0082\3\2\2"+
 		"\2\u0082\u0083\5$\23\2\u0083\17\3\2\2\2\u0084\u0085\t\2\2\2\u0085\21\3"+
 		"\2\2\2\u0086\u008a\5\24\13\2\u0087\u008a\5\26\f\2\u0088\u008a\5\30\r\2"+

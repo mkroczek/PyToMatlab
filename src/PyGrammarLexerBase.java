@@ -102,7 +102,6 @@ abstract class PyGrammarLexerBase extends Lexer {
     }
 
     void onNewLine(){
-        System.out.println("New line!");
         String newLine = getText().replaceAll("[^\r\n\f]+", "");
         String spaces = getText().replaceAll("[\r\n\f]+", "");
 

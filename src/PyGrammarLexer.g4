@@ -68,7 +68,7 @@ PRINT : 'print';
 LEN : 'len';
 
 IDENTIFIER
-    : ID_START ID_CONTINUE*{System.out.println("Identifier");}
+    : ID_START ID_CONTINUE*
     ;
 
 NEWLINE
