@@ -66,6 +66,7 @@ ASYNC : 'async';
 AWAIT : 'await';
 PRINT : 'print';
 LEN : 'len';
+RANGE : 'range';
 
 IDENTIFIER
     : ID_START ID_CONTINUE*

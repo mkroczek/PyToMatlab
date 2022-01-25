@@ -435,6 +435,18 @@ public class PyGrammarParserBaseListener implements PyGrammarParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterRange_fun_call(PyGrammarParser.Range_fun_callContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRange_fun_call(PyGrammarParser.Range_fun_callContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterList2d(PyGrammarParser.List2dContext ctx) { }
 	/**
 	 * {@inheritDoc}

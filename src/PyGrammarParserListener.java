@@ -357,6 +357,16 @@ public interface PyGrammarParserListener extends ParseTreeListener {
 	 */
 	void exitBuilt_fun_call(PyGrammarParser.Built_fun_callContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link PyGrammarParser#range_fun_call}.
+	 * @param ctx the parse tree
+	 */
+	void enterRange_fun_call(PyGrammarParser.Range_fun_callContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PyGrammarParser#range_fun_call}.
+	 * @param ctx the parse tree
+	 */
+	void exitRange_fun_call(PyGrammarParser.Range_fun_callContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link PyGrammarParser#list2d}.
 	 * @param ctx the parse tree
 	 */

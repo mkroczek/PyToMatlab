@@ -261,6 +261,13 @@ public class PyGrammarParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> i
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitRange_fun_call(PyGrammarParser.Range_fun_callContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitList2d(PyGrammarParser.List2dContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

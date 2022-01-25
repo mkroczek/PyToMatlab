@@ -1,6 +1,8 @@
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-//TODO: dodac indeksowanie od jedynki
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
     private StringBuilder codeBlock = new StringBuilder();
@@ -8,6 +10,7 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
     private CompileContext compileContext;
     private boolean inSubscript = false;
     private boolean wasReturnValue = false;
+    private int nReturnValues = 0;
     private int indents = 0;
 
     public String getCompiled(){
@@ -79,8 +82,18 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
     @Override
     public Object visitReturn_stmt(PyGrammarParser.Return_stmtContext ctx) {
         if (ctx.test() != null){
+            //single return value
             append("res=");
             visitTest(ctx.test());
+            wasReturnValue = true;
+            nReturnValues = 1;
+        }
+        else if (ctx.arglist() != null){
+            //multiple return values
+            CompileContext previous = compileContext;
+            compileContext = CompileContext.RETURN;
+            visitArglist(ctx.arglist());
+            compileContext = previous;
             wasReturnValue = true;
         }
         else {
@@ -153,10 +166,12 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
 
     @Override
     public Object visitFor_stmt(PyGrammarParser.For_stmtContext ctx) {
-        //TODO: dodac range jako token i zamieniac go na 1:range(x)
         append("for ");
         append(ctx.IDENTIFIER().getText()+" = ");
-        visitTest(ctx.test());
+        if (ctx.test() != null)
+            visitTest(ctx.test());
+        else if (ctx.range_fun_call() != null)
+            visitRange_fun_call(ctx.range_fun_call());
         newline(currentBuilder());
         visitBlock(ctx.block());
         append("end");
@@ -164,7 +179,6 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
     }
 
     @Override public Object visitFunc_def(PyGrammarParser.Func_defContext ctx) {
-        //TODO: dodac return
         append("function ");
         PositionPointer returnValuePointer = new PositionPointer(currentBuilder(), currentBuilder().length());
         append(ctx.IDENTIFIER().getText()+"(");
@@ -176,16 +190,23 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
         visitBlock(ctx.block());
         append("end");
         if (wasReturnValue){
-            //replace $ to function return value
             wasReturnValue = false;
-            returnValuePointer.insert("res=");
-        }
+            if (nReturnValues == 1)
+                returnValuePointer.insert("res=");
+            else if (nReturnValues > 1)
+                returnValuePointer.insert("["+IntStream.range(0,nReturnValues)
+                        .mapToObj(i->"res"+((Integer) i).toString())
+                        .collect(Collectors.joining(","))+"]=");
+            nReturnValues = 0;
+            }
         return null;
     }
 
     @Override
     public Object visitTest(PyGrammarParser.TestContext ctx) {
         visitChildren(ctx);
+        if (inSubscript)
+            append("+1");
         return null;
     }
 
@@ -265,18 +286,31 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
 
     @Override
     public Object visitTerm(PyGrammarParser.TermContext ctx) {
+        PositionPointer beforeModPointer = new PositionPointer(currentBuilder(), currentBuilder().length());
         visitFactor(ctx.factor(0));
         for (int i = 0; i<ctx.mul_op().size(); i++){
-            visitMul_op(ctx.mul_op(0));
-            visitFactor(ctx.factor(i+1));
+            if (ctx.mul_op(i).start.getType() == PyGrammarLexer.MOD){
+                beforeModPointer.insert("mod(");
+                append(",");
+                visitFactor(ctx.factor(i+1));
+                append(")");
+            }
+            else{
+                visitMul_op(ctx.mul_op(i));
+                beforeModPointer = new PositionPointer(currentBuilder(), currentBuilder().length());
+                visitFactor(ctx.factor(i+1));
+            }
         }
         return null;
     }
 
     @Override
     public Object visitMul_op(PyGrammarParser.Mul_opContext ctx) {
-        //TODO: dodac obsluge modulo i dzielenia calkowitoliczbowego
-        append(ctx.getText());
+        if (ctx.IDIV() != null){
+            append("/");
+        }
+        else
+            append(ctx.getText());
         return null;
     }
 
@@ -321,22 +355,22 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
                 case PyGrammarParser.TRUE -> append("true");
                 case PyGrammarParser.FALSE -> append("false");
                 case PyGrammarParser.NONE -> append("NaN");
-                case PyGrammarParser.IDENTIFIER -> {
-                    if (inSubscript){
-                        append(ctx.IDENTIFIER().getText()+"+1");
-                    }
-                    else {
-                        append(ctx.IDENTIFIER().getText());
-                    }
-                }
-                case PyGrammarParser.NUMBER -> {
-                    if (inSubscript){
-                        append(String.valueOf(Integer.parseInt(ctx.NUMBER().getText())+1));
-                    }
-                    else {
-                        append(ctx.NUMBER().getText());
-                    }
-                }
+//                case PyGrammarParser.IDENTIFIER -> {
+//                    if (inSubscript){
+//                        append(ctx.IDENTIFIER().getText()+"+1");
+//                    }
+//                    else {
+//                        append(ctx.IDENTIFIER().getText());
+//                    }
+//                }
+//                case PyGrammarParser.NUMBER -> {
+//                    if (inSubscript){
+//                        append(String.valueOf(Integer.parseInt(ctx.NUMBER().getText())+1));
+//                    }
+//                    else {
+//                        append(ctx.NUMBER().getText());
+//                    }
+//                }
                 default -> append(ctx.children.get(0).getText());
             }
         }
@@ -372,6 +406,30 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
             append("disp(");
             visitArgument(ctx.argument());
             append(")");
+        }
+        return null;
+    }
+
+    @Override
+    public Object visitRange_fun_call(PyGrammarParser.Range_fun_callContext ctx) {
+        if (ctx.argument().size() == 1){
+            append("0:");
+            visitArgument(ctx.argument(0));
+            append("-1");
+        }
+        else if (ctx.argument().size() == 2){
+            visitArgument(ctx.argument(0));
+            append(":");
+            visitArgument(ctx.argument(1));
+            append("-1");
+        }
+        else if (ctx.argument().size() == 3){
+            visitArgument(ctx.argument(0));
+            append(":");
+            visitArgument(ctx.argument(2));
+            append(":");
+            visitArgument(ctx.argument(1));
+            append("-1");
         }
         return null;
     }
@@ -444,10 +502,23 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
 
     @Override
     public Object visitArglist(PyGrammarParser.ArglistContext ctx) {
-        visitArgument(ctx.argument(0));
-        for (int i = 0; i < ctx.COMMA().size(); i++){
-            append(",");
-            visitArgument(ctx.argument(i+1));
+        if (compileContext == CompileContext.RETURN){
+            for (int i = 0; i < ctx.argument().size(); i++){
+                if (i != 0)
+                    appendTabs();
+                append("res"+i+"=");
+                visitArgument(ctx.argument(i));
+                if (i != ctx.argument().size()-1)
+                    newline(currentBuilder());
+            }
+            nReturnValues = ctx.argument().size();
+        }
+        else{
+            visitArgument(ctx.argument(0));
+            for (int i = 0; i < ctx.COMMA().size(); i++){
+                append(",");
+                visitArgument(ctx.argument(i+1));
+            }
         }
         return null;
     }
@@ -495,6 +566,7 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
         return switch (compileContext) {
             case CODE -> codeBlock;
             case FUNCTION -> functionsBlock;
+            case RETURN -> functionsBlock;
         };
     }
 }

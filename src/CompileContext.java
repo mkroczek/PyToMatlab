@@ -1,4 +1,5 @@
 public enum CompileContext {
     CODE,
-    FUNCTION;
+    FUNCTION,
+    RETURN;
 }

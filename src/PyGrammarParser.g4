@@ -25,14 +25,14 @@ assignment_op: ('+=' | '-=' | '*=' | '/=');
 flow_stmt: break_stmt | continue_stmt | return_stmt;
 break_stmt: 'break';
 continue_stmt: 'continue';
-return_stmt: 'return' (test)?;
+return_stmt: 'return' ('(' arglist ')' | test)?;
 expr_stmt: test;
 
 //compound_stmt
 if_stmt: 'if' test ':' block ('elif' test ':' block)* ('else' ':' block)?;
 func_def: 'def' IDENTIFIER '(' (arglist)? ')' ':' block;
 while_stmt: 'while' test ':' block;
-for_stmt: 'for' IDENTIFIER 'in' test ':' block;
+for_stmt: 'for' IDENTIFIER 'in' (range_fun_call | test) ':' block;
 
 test: or_test;
 or_test: and_test ('or' and_test)*;
@@ -53,6 +53,7 @@ atom: fun_call | built_fun_call | list2d | list | IDENTIFIER | STRING+ | NUMBER 
 fun_call: IDENTIFIER par_arguments;
 par_arguments: '(' (arglist)? ')';
 built_fun_call: ('len'|'print') '(' argument ')';
+range_fun_call: 'range' '(' argument (',' argument)* ')';
 list2d: '[' list (',' list)* ']';
 list: '[' (arglist)? ']';
 arglist: argument (',' argument)*;

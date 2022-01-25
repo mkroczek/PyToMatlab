@@ -220,6 +220,12 @@ public interface PyGrammarParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBuilt_fun_call(PyGrammarParser.Built_fun_callContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link PyGrammarParser#range_fun_call}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRange_fun_call(PyGrammarParser.Range_fun_callContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link PyGrammarParser#list2d}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
