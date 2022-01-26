@@ -21,8 +21,8 @@ public class PyGrammarLexer extends PyGrammarLexerBase {
 		IF=16, ELIF=17, ELSE=18, WHILE=19, FOR=20, IN=21, TRY=22, FINALLY=23, 
 		WITH=24, EXCEPT=25, LAMBDA=26, OR=27, AND=28, NOT=29, IS=30, NONE=31, 
 		TRUE=32, FALSE=33, CLASS=34, YIELD=35, DEL=36, PASS=37, CONTINUE=38, BREAK=39, 
-		ASYNC=40, AWAIT=41, PRINT=42, LEN=43, RANGE=44, IDENTIFIER=45, NEWLINE=46, 
-		COMMENT=47, SKIP_=48, OPEN_PAREN=49, CLOSE_PAREN=50, OPEN_BRACK=51, CLOSE_BRACK=52, 
+		ASYNC=40, AWAIT=41, PRINT=42, LEN=43, RANGE=44, NEWLINE=45, IDENTIFIER=46, 
+		SKIP_=47, COMMENT=48, OPEN_PAREN=49, CLOSE_PAREN=50, OPEN_BRACK=51, CLOSE_BRACK=52, 
 		OPEN_BRACE=53, CLOSE_BRACE=54, DOT=55, ELLIPSIS=56, STAR=57, COMMA=58, 
 		COLON=59, SEMI_COLON=60, POWER=61, ASSIGN=62, OR_OP=63, XOR=64, AND_OP=65, 
 		LEFT_SHIFT=66, RIGHT_SHIFT=67, ADD=68, MINUS=69, DIV=70, MOD=71, IDIV=72, 
@@ -46,7 +46,7 @@ public class PyGrammarLexer extends PyGrammarLexerBase {
 			"WHILE", "FOR", "IN", "TRY", "FINALLY", "WITH", "EXCEPT", "LAMBDA", "OR", 
 			"AND", "NOT", "IS", "NONE", "TRUE", "FALSE", "CLASS", "YIELD", "DEL", 
 			"PASS", "CONTINUE", "BREAK", "ASYNC", "AWAIT", "PRINT", "LEN", "RANGE", 
-			"IDENTIFIER", "NEWLINE", "COMMENT", "SKIP_", "OPEN_PAREN", "CLOSE_PAREN", 
+			"NEWLINE", "IDENTIFIER", "SKIP_", "COMMENT", "OPEN_PAREN", "CLOSE_PAREN", 
 			"OPEN_BRACK", "CLOSE_BRACK", "OPEN_BRACE", "CLOSE_BRACE", "DOT", "ELLIPSIS", 
 			"STAR", "COMMA", "COLON", "SEMI_COLON", "POWER", "ASSIGN", "OR_OP", "XOR", 
 			"AND_OP", "LEFT_SHIFT", "RIGHT_SHIFT", "ADD", "MINUS", "DIV", "MOD", 
@@ -83,7 +83,7 @@ public class PyGrammarLexer extends PyGrammarLexerBase {
 			"IF", "ELIF", "ELSE", "WHILE", "FOR", "IN", "TRY", "FINALLY", "WITH", 
 			"EXCEPT", "LAMBDA", "OR", "AND", "NOT", "IS", "NONE", "TRUE", "FALSE", 
 			"CLASS", "YIELD", "DEL", "PASS", "CONTINUE", "BREAK", "ASYNC", "AWAIT", 
-			"PRINT", "LEN", "RANGE", "IDENTIFIER", "NEWLINE", "COMMENT", "SKIP_", 
+			"PRINT", "LEN", "RANGE", "NEWLINE", "IDENTIFIER", "SKIP_", "COMMENT", 
 			"OPEN_PAREN", "CLOSE_PAREN", "OPEN_BRACK", "CLOSE_BRACK", "OPEN_BRACE", 
 			"CLOSE_BRACE", "DOT", "ELLIPSIS", "STAR", "COMMA", "COLON", "SEMI_COLON", 
 			"POWER", "ASSIGN", "OR_OP", "XOR", "AND_OP", "LEFT_SHIFT", "RIGHT_SHIFT", 
@@ -155,7 +155,7 @@ public class PyGrammarLexer extends PyGrammarLexerBase {
 	@Override
 	public void action(RuleContext _localctx, int ruleIndex, int actionIndex) {
 		switch (ruleIndex) {
-		case 43:
+		case 42:
 			NEWLINE_action((RuleContext)_localctx, actionIndex);
 			break;
 		}
@@ -196,9 +196,9 @@ public class PyGrammarLexer extends PyGrammarLexerBase {
 		" \3 \3!\3!\3!\3!\3!\3!\3\"\3\"\3\"\3\"\3\"\3\"\3#\3#\3#\3#\3$\3$\3$\3"+
 		"$\3$\3%\3%\3%\3%\3%\3%\3%\3%\3%\3&\3&\3&\3&\3&\3&\3\'\3\'\3\'\3\'\3\'"+
 		"\3\'\3(\3(\3(\3(\3(\3(\3)\3)\3)\3)\3)\3)\3*\3*\3*\3*\3+\3+\3+\3+\3+\3"+
-		"+\3,\3,\7,\u01c2\n,\f,\16,\u01c5\13,\3-\5-\u01c8\n-\3-\3-\5-\u01cc\n-"+
-		"\3-\5-\u01cf\n-\3-\3-\3.\3.\7.\u01d5\n.\f.\16.\u01d8\13.\3/\3/\5/\u01dc"+
-		"\n/\3/\3/\3\60\3\60\3\61\3\61\3\62\3\62\3\63\3\63\3\64\3\64\3\65\3\65"+
+		"+\3,\5,\u01c1\n,\3,\3,\5,\u01c5\n,\3,\5,\u01c8\n,\3,\3,\3-\3-\7-\u01ce"+
+		"\n-\f-\16-\u01d1\13-\3.\3.\5.\u01d5\n.\3.\3.\3/\3/\7/\u01db\n/\f/\16/"+
+		"\u01de\13/\3\60\3\60\3\61\3\61\3\62\3\62\3\63\3\63\3\64\3\64\3\65\3\65"+
 		"\3\66\3\66\3\67\3\67\3\67\3\67\38\38\39\39\3:\3:\3;\3;\3<\3<\3<\3=\3="+
 		"\3>\3>\3?\3?\3@\3@\3A\3A\3A\3B\3B\3B\3C\3C\3D\3D\3E\3E\3F\3F\3G\3G\3G"+
 		"\3H\3H\3I\3I\3J\3J\3K\3K\3K\3L\3L\3L\3M\3M\3M\3N\3N\3N\3O\3O\3O\3P\3P"+
@@ -240,8 +240,8 @@ public class PyGrammarLexer extends PyGrammarLexerBase {
 		"\2\67\u0168\3\2\2\29\u016c\3\2\2\2;\u016f\3\2\2\2=\u0174\3\2\2\2?\u0179"+
 		"\3\2\2\2A\u017f\3\2\2\2C\u0185\3\2\2\2E\u018b\3\2\2\2G\u018f\3\2\2\2I"+
 		"\u0194\3\2\2\2K\u019d\3\2\2\2M\u01a3\3\2\2\2O\u01a9\3\2\2\2Q\u01af\3\2"+
-		"\2\2S\u01b5\3\2\2\2U\u01b9\3\2\2\2W\u01bf\3\2\2\2Y\u01cb\3\2\2\2[\u01d2"+
-		"\3\2\2\2]\u01db\3\2\2\2_\u01df\3\2\2\2a\u01e1\3\2\2\2c\u01e3\3\2\2\2e"+
+		"\2\2S\u01b5\3\2\2\2U\u01b9\3\2\2\2W\u01c4\3\2\2\2Y\u01cb\3\2\2\2[\u01d4"+
+		"\3\2\2\2]\u01d8\3\2\2\2_\u01df\3\2\2\2a\u01e1\3\2\2\2c\u01e3\3\2\2\2e"+
 		"\u01e5\3\2\2\2g\u01e7\3\2\2\2i\u01e9\3\2\2\2k\u01eb\3\2\2\2m\u01ed\3\2"+
 		"\2\2o\u01f1\3\2\2\2q\u01f3\3\2\2\2s\u01f5\3\2\2\2u\u01f7\3\2\2\2w\u01f9"+
 		"\3\2\2\2y\u01fc\3\2\2\2{\u01fe\3\2\2\2}\u0200\3\2\2\2\177\u0202\3\2\2"+
@@ -321,21 +321,21 @@ public class PyGrammarLexer extends PyGrammarLexerBase {
 		"\u01b2\7k\2\2\u01b2\u01b3\7p\2\2\u01b3\u01b4\7v\2\2\u01b4R\3\2\2\2\u01b5"+
 		"\u01b6\7n\2\2\u01b6\u01b7\7g\2\2\u01b7\u01b8\7p\2\2\u01b8T\3\2\2\2\u01b9"+
 		"\u01ba\7t\2\2\u01ba\u01bb\7c\2\2\u01bb\u01bc\7p\2\2\u01bc\u01bd\7i\2\2"+
-		"\u01bd\u01be\7g\2\2\u01beV\3\2\2\2\u01bf\u01c3\5\u00c3b\2\u01c0\u01c2"+
-		"\5\u00c5c\2\u01c1\u01c0\3\2\2\2\u01c2\u01c5\3\2\2\2\u01c3\u01c1\3\2\2"+
-		"\2\u01c3\u01c4\3\2\2\2\u01c4X\3\2\2\2\u01c5\u01c3\3\2\2\2\u01c6\u01c8"+
-		"\7\17\2\2\u01c7\u01c6\3\2\2\2\u01c7\u01c8\3\2\2\2\u01c8\u01c9\3\2\2\2"+
-		"\u01c9\u01cc\7\f\2\2\u01ca\u01cc\4\16\17\2\u01cb\u01c7\3\2\2\2\u01cb\u01ca"+
-		"\3\2\2\2\u01cc\u01ce\3\2\2\2\u01cd\u01cf\5\u00c7d\2\u01ce\u01cd\3\2\2"+
-		"\2\u01ce\u01cf\3\2\2\2\u01cf\u01d0\3\2\2\2\u01d0\u01d1\b-\2\2\u01d1Z\3"+
-		"\2\2\2\u01d2\u01d6\7%\2\2\u01d3\u01d5\n\2\2\2\u01d4\u01d3\3\2\2\2\u01d5"+
-		"\u01d8\3\2\2\2\u01d6\u01d4\3\2\2\2\u01d6\u01d7\3\2\2\2\u01d7\\\3\2\2\2"+
-		"\u01d8\u01d6\3\2\2\2\u01d9\u01dc\5\u00c7d\2\u01da\u01dc\5[.\2\u01db\u01d9"+
-		"\3\2\2\2\u01db\u01da\3\2\2\2\u01dc\u01dd\3\2\2\2\u01dd\u01de\b/\3\2\u01de"+
-		"^\3\2\2\2\u01df\u01e0\7*\2\2\u01e0`\3\2\2\2\u01e1\u01e2\7+\2\2\u01e2b"+
-		"\3\2\2\2\u01e3\u01e4\7]\2\2\u01e4d\3\2\2\2\u01e5\u01e6\7_\2\2\u01e6f\3"+
-		"\2\2\2\u01e7\u01e8\7}\2\2\u01e8h\3\2\2\2\u01e9\u01ea\7\177\2\2\u01eaj"+
-		"\3\2\2\2\u01eb\u01ec\7\60\2\2\u01ecl\3\2\2\2\u01ed\u01ee\7\60\2\2\u01ee"+
+		"\u01bd\u01be\7g\2\2\u01beV\3\2\2\2\u01bf\u01c1\7\17\2\2\u01c0\u01bf\3"+
+		"\2\2\2\u01c0\u01c1\3\2\2\2\u01c1\u01c2\3\2\2\2\u01c2\u01c5\7\f\2\2\u01c3"+
+		"\u01c5\4\16\17\2\u01c4\u01c0\3\2\2\2\u01c4\u01c3\3\2\2\2\u01c5\u01c7\3"+
+		"\2\2\2\u01c6\u01c8\5\u00c7d\2\u01c7\u01c6\3\2\2\2\u01c7\u01c8\3\2\2\2"+
+		"\u01c8\u01c9\3\2\2\2\u01c9\u01ca\b,\2\2\u01caX\3\2\2\2\u01cb\u01cf\5\u00c3"+
+		"b\2\u01cc\u01ce\5\u00c5c\2\u01cd\u01cc\3\2\2\2\u01ce\u01d1\3\2\2\2\u01cf"+
+		"\u01cd\3\2\2\2\u01cf\u01d0\3\2\2\2\u01d0Z\3\2\2\2\u01d1\u01cf\3\2\2\2"+
+		"\u01d2\u01d5\5\u00c7d\2\u01d3\u01d5\5]/\2\u01d4\u01d2\3\2\2\2\u01d4\u01d3"+
+		"\3\2\2\2\u01d5\u01d6\3\2\2\2\u01d6\u01d7\b.\3\2\u01d7\\\3\2\2\2\u01d8"+
+		"\u01dc\7%\2\2\u01d9\u01db\n\2\2\2\u01da\u01d9\3\2\2\2\u01db\u01de\3\2"+
+		"\2\2\u01dc\u01da\3\2\2\2\u01dc\u01dd\3\2\2\2\u01dd^\3\2\2\2\u01de\u01dc"+
+		"\3\2\2\2\u01df\u01e0\7*\2\2\u01e0`\3\2\2\2\u01e1\u01e2\7+\2\2\u01e2b\3"+
+		"\2\2\2\u01e3\u01e4\7]\2\2\u01e4d\3\2\2\2\u01e5\u01e6\7_\2\2\u01e6f\3\2"+
+		"\2\2\u01e7\u01e8\7}\2\2\u01e8h\3\2\2\2\u01e9\u01ea\7\177\2\2\u01eaj\3"+
+		"\2\2\2\u01eb\u01ec\7\60\2\2\u01ecl\3\2\2\2\u01ed\u01ee\7\60\2\2\u01ee"+
 		"\u01ef\7\60\2\2\u01ef\u01f0\7\60\2\2\u01f0n\3\2\2\2\u01f1\u01f2\7,\2\2"+
 		"\u01f2p\3\2\2\2\u01f3\u01f4\7.\2\2\u01f4r\3\2\2\2\u01f5\u01f6\7<\2\2\u01f6"+
 		"t\3\2\2\2\u01f7\u01f8\7=\2\2\u01f8v\3\2\2\2\u01f9\u01fa\7,\2\2\u01fa\u01fb"+
@@ -372,8 +372,8 @@ public class PyGrammarLexer extends PyGrammarLexerBase {
 		"\2\2\u0267\u026a\5\u00c3b\2\u0268\u026a\5\u00bf`\2\u0269\u0267\3\2\2\2"+
 		"\u0269\u0268\3\2\2\2\u026a\u00c6\3\2\2\2\u026b\u026d\t\6\2\2\u026c\u026b"+
 		"\3\2\2\2\u026d\u026e\3\2\2\2\u026e\u026c\3\2\2\2\u026e\u026f\3\2\2\2\u026f"+
-		"\u00c8\3\2\2\2\24\2\u00cd\u00d5\u00d9\u00dd\u00e3\u00e9\u00eb\u01c3\u01c7"+
-		"\u01cb\u01ce\u01d6\u01db\u0261\u0265\u0269\u026e\4\3-\2\b\2\2";
+		"\u00c8\3\2\2\2\24\2\u00cd\u00d5\u00d9\u00dd\u00e3\u00e9\u00eb\u01c0\u01c4"+
+		"\u01c7\u01cf\u01d4\u01dc\u0261\u0265\u0269\u026e\4\3,\2\b\2\2";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

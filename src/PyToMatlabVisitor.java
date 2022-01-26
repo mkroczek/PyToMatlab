@@ -115,8 +115,6 @@ public class PyToMatlabVisitor extends PyGrammarParserBaseVisitor<Object>{
             compileContext = CompileContext.FUNCTION;
             appendTabs();
             visitChildren(ctx);
-            if (compileContext == CompileContext.FUNCTION)
-                System.out.println("I create newline in function context");
             newline(currentBuilder());
             compileContext = previous;
         }

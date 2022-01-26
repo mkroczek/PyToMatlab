@@ -68,20 +68,20 @@ PRINT : 'print';
 LEN : 'len';
 RANGE : 'range';
 
-IDENTIFIER
-    : ID_START ID_CONTINUE*
-    ;
-
 NEWLINE
     : ( '\r'? '\n' | '\r' | '\f' ) SPACES? {this.onNewLine();}
     ;
 
-COMMENT
-    : '#' ~[\r\n\f]*
+IDENTIFIER
+    : ID_START ID_CONTINUE*
     ;
 
 SKIP_
     : ( SPACES | COMMENT ) -> skip
+    ;
+
+COMMENT
+    : '#' ~[\r\n\f]*
     ;
 
 OPEN_PAREN : '(';
